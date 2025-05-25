@@ -1,0 +1,32 @@
+# docker-compose.yml
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-todo
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: todoApp
+      MYSQL_USER: todoUser
+      MYSQL_PASSWORD: todoPass
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  todo-app:
+    build: .
+    container_name: todo-app
+    depends_on:
+      - mysql
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/todoApp
+      SPRING_DATASOURCE_USERNAME: todoUser
+      SPRING_DATASOURCE_PASSWORD: todoPass
+
+volumes:
+  db_data:

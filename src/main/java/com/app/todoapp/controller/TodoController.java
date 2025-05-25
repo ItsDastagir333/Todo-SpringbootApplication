@@ -15,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.app.todoapp.entity.Todo;
 import com.app.todoapp.service.TodoService;
 
-import jakarta.websocket.server.PathParam;
-
 @Controller
 @RequestMapping(value = "/")
 public class TodoController {
@@ -28,7 +26,7 @@ public class TodoController {
 		this.todoService = todoService;
 	}
 	
-	@GetMapping(value = "/getTodo")
+	@GetMapping(value = "/getTodos")
 	public String getTodos(Model model) {
 		List<Todo> todos = todoService.getAllTodos();
 		model.addAttribute("todos", todos);
@@ -39,19 +37,19 @@ public class TodoController {
 	@PostMapping(value = "/addTodo")
 	public String addTodo(@RequestParam String title, String description, LocalDate dateToComplete) {
 		todoService.addTodo(title, description, dateToComplete);
-		return "redirect:/getTodo";
+		return "redirect:/getTodos";
 	}
 	
-	@GetMapping(value="/getTodo/{id}/delete")
+	@GetMapping(value="/getTodos/{id}/delete")
 	public String deleteTodo(@PathVariable(value = "id") Long id) {
 		todoService.deleteTodo(id);
-		return "redirect:/getTodo";
+		return "redirect:/getTodos";
 	}
 	
-	@GetMapping(value="/getTodo/{id}/toggle")
+	@GetMapping(value="/getTodos/{id}/toggle")
 	public String toggleTodo(@PathVariable(value = "id") Long id) {
 		todoService.toggleTodo(id);
-		return "redirect:/getTodo";
+		return "redirect:/getTodos";
 	}
 
 }
